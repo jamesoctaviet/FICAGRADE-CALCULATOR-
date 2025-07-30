@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FICA Home</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    background: #001f3f;
+    overflow-x: hidden;
+  }
+  /* Background video */
+  #bgVideo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.4);
+  }
+  /* Overlay on video */
+  #videoOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+  }
+  /* Header with some padding */
+  header {
+    position: relative;
+    padding: 60px 20px 40px;
+    text-align: center;
+    z-index: 10;
+  }
+  header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid #00c6ff;
+    box-shadow: 0 0 15px #00c6ff;
+    transition: transform 0.3s ease;
+  }
+  header img:hover {
+    transform: scale(1.1);
+  }
+  header h1 {
+    margin-top: 0;
+    font-size: 2.8rem;
+    text-shadow: 0 0 10px #00c6ff;
+  }
+  /* Sticky nav */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 15px 0;
+    font-weight: bold;
+    z-index: 20;
+    box-shadow: 0 2px 5px rgba(0,198,255,0.6);
+    transition: background 0.3s ease;
+  }
+  nav:hover {
+    background: rgba(0,0,0,0.85);
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  nav a:hover,
+  nav a.active {
+    background: #00c6ff;
+    color: #001f3f;
+    text-decoration: none;
+  }
+  /* Main content */
+  main {
+    position: relative;
+    max-width: 900px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.25);
+    border-radius: 15px;
+    box-shadow: 0 0 25px #00c6ffaa;
+  }
+  main h2 {
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px #00c6ff;
+  }
+  main p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #cceeff;
+    margin-bottom: 40px;
+  }
+  /* Call to action buttons */
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    background: #00c6ff;
+    color: #001f3f;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #00c6ffaa;
+    text-transform: uppercase;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn:hover {
+    background: #0096cc;
+    transform: scale(1.05);
+  }
+ 
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.5);
+    color: #aad8ff;
+    box-shadow: 0 0 10px #0096ccaa inset;
+  }
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 {
+      font-size: 1.8rem;
+      padding: 0 15px;
+    }
+    main h2 {
+      font-size: 1.8rem;
+    }
+    main p {
+      font-size: 1rem;
+    }
+    nav {
+      gap: 15px;
+      padding: 12px 0;
+    }
+    .btn-group {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Background video -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="images/567.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div id="videoOverlay"></div>
+
+  <header>
+    <img src="images/logo.jpg" alt="FICA Logo" />
+    <h1>Welcome to The Tech and Engineering Club of Friends International Christian Academy</h1>
+    
+  </header>
+
+  <nav>
+    <a href="home.html" class="active">Home</a>
+    <a href="about.html">About</a>
+    <a href="calculator.html">Calculator</a>
+  </nav>
+
+  <main>
+    <h2>Empowering Future Leaders Through Technology</h2>
+    <p>
+At FICA, we blend faith and innovation to inspire the next generation. Through coding, design, and teamwork, we help students turn ideas into impact and grow as confident, creative leaders.
+    </p>
+    <div class="btn-group">
+      <button class="btn" onclick="location.href='about.html'">Learn More About Us</button>
+      <button class="btn" onclick="location.href='calculator.html'">Use Grade Calculator</button>
+    </div>
+  </main>
+
+  
+  <footer>
+    &copy; 2025 Friends International Christian Academy — Powered by the Python Class
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>About FICA Python Class</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0f7ff;
+    background: #001f3f;
+    overflow-x: hidden;
+  }
+  /* Background video */
+  #bgVideo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: -3;
+    filter: brightness(0.6);
+  }
+  /* Slideshow */
+  #slideshow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -2;
+    overflow: hidden;
+  }
+  #slideshow img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+  }
+  #slideshow img.active {
+    opacity: 1;
+  }
+  /* Overlay */
+  #overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+  }
+  /* Container */
+  .container {
+    position: relative;
+    max-width: 900px;
+    margin: 80px auto;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 40px 50px;
+    border-radius: 12px;
+    color: #e0f7ff;
+    text-align: center;
+    z-index: 1;
+    user-select: none;
+  }
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: #00c6ff;
+    text-shadow: 0 0 4px #00c6ff, 0 0 6px #005f99;
+  }
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #d2f2ff;
+    text-shadow: 0 0 2px rgba(0, 198, 255, 0.4);
+  }
+  footer {
+    font-size: 0.9rem;
+    color: #aad8ff;
+    margin-top: 30px;
+    text-shadow: 0 0 2px #0096cc;
+  }
+  /* Music button */
+  #musicBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: rgba(0, 198, 255, 0.85);
+    color: #001f3f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00c6ff;
+    transition: background 0.3s ease;
+    user-select: none;
+    z-index: 10;
+  }
+  #musicBtn:hover {
+    background: #00a3d9;
+    color: #fff;
+  }
+  /* Gallery grid */
+  #gallery {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    z-index: 2;
+    position: relative;
+  }
+  #gallery img {
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    /* Photoshop style effects */
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.5),
+      0 0 15px rgba(0,198,255,0.7),
+      inset 0 0 10px rgba(255,255,255,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  #gallery img:hover {
+    transform: scale(1.08);
+    box-shadow:
+      0 8px 16px rgba(0,0,0,0.7),
+      0 0 30px rgba(0,198,255,0.9),
+      inset 0 0 15px rgba(255,255,255,0.3);
+  }
+  /* Lightbox overlay */
+  #lightboxOverlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  #lightboxOverlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow:
+      0 0 40px #00c6ff,
+      inset 0 0 20px #00e5ff;
+  }
+  #lightboxOverlay:active {
+    display: none;
+  }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container {
+      margin: 40px 20px;
+      padding: 30px 20px;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Background video -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="images/567.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Slideshow -->
+  <div id="slideshow">
+    <img src="images/23.jpg" alt="Slide 1" class="active" />
+    <img src="images/33.jpg" alt="Slide 2" />
+    <img src="images/44.jpg" alt="Slide 3" />
+    <img src="images/pic 2.jpg" alt="Slide 4" />
+    <img src="images/567.jpg" alt="Slide 5" />
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay"></div>
+
+  <div class="container">
+    <h1>About the Python Class</h1>
+
+    <p>
+      The <strong>FICA Python Class</strong> is a vibrant and inspiring group of learners passionate about exploring the digital world. From Python programming and robotics to Scratch, PictoBlox, web design, and graphic design, they take themselves in the art of creating and innovating.
+      Through hands on projects like the Grade Calculator, they work on real world challenges, mastering both coding and design. Each session is a journey writing Python scripts, programming robots, crafting interactive animations, and building beautiful websites.
+      This community of curious minds is more than just a class but its a launchpad for future developers, designers, and innovators driven by creativity, teamwork, and the desire to turn ideas into reality.
+    </p>
+    <p>
+      The class is led by the passionate and skilled <strong>Eng. Andrew</strong>, who not only guides their technical learning but also mentors them with strong Christian values and teamwork.
+      Under his leadership, the class thrives on collaboration, curiosity, and creativity.
+    </p>
+    <p>
+      The learners include <strong>James</strong>, <strong>Golden</strong>, <strong>Desmond</strong>, <strong>Jerry</strong>, and <strong>Lewi</strong> — five determined students who are growing as developers, thinkers, and contributors to the future of tech.
+    </p>
+    <p style="font-style: italic; color: #a7dcff; margin-top: 40px; text-shadow: 0 0 2px #004a75;">
+      <q>“Whatever you do, work at it with all your heart, as working for the Lord.”</q><br />
+      <small>— Colossians 3:23</small>
+    </p>
+
+    <!-- Gallery -->
+    <div id="gallery">
+      <img src="images/23.jpg" alt="Image 1" />
+      <img src="images/33.jpg" alt="Image 2" />
+      <img src="images/44.jpg" alt="Image 3" />
+      <img src="images/pic 2.jpg" alt="Image 4" />
+      <img src="images/567.jpg" alt="Image 5" />
+      <img src="images/advert.jpg" alt="Advert 1" />
+      <img src="images/advertisee.jpg" alt="Advert 2" />
+      <img src="images/56.jpg" alt="Image 6" />
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+      <source src="background.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <button id="musicBtn" onclick="toggleMusic()">🔊 Music On</button>
+
+    <footer>
+      Built with ❤️ by the Python Class @ Friends International Christian Academy
+    </footer>
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div id="lightboxOverlay"></div>
+
+  <script>
+    // Slideshow logic
+    const slides = document.querySelectorAll('#slideshow img');
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 7000);
+
+    // Music toggle
+    function toggleMusic() {
+      const music = document.getElementById('bgMusic');
+      const btn = document.getElementById('musicBtn');
+      if (music.paused) {
+        music.play();
+        btn.textContent = '🔊 Music On';
+      } else {
+        music.pause();
+        btn.textContent = '🔇 Music Off';
+      }
+    }
+
+    // Lightbox
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('lightboxOverlay');
+
+    gallery.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightbox.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightbox.innerHTML = '';
+    });
+  </script>
+</body>
+</html>

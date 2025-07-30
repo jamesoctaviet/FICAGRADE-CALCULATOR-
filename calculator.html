@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FICA Grade Calculator</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0; padding: 0;
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: #fff;
+    transition: background 0.5s, color 0.5s;
+  }
+  body.light {
+    background: #f0f4f8;
+    color: #222;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: background 0.5s, color 0.5s;
+  }
+  body.light .container {
+    background: #fff;
+    color: #222;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .datetime {
+    margin-bottom: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffe;
+  }
+  body.light .datetime {
+    color: #555;
+  }
+
+  /* Accordion Styles */
+  .accordion {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    cursor: pointer;
+    padding: 15px 20px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    margin-top: 30px;
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  body.light .accordion {
+    background: #eee;
+    color: #222;
+  }
+  .accordion:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  body.light .accordion:hover {
+    background: #ddd;
+  }
+  .accordion:focus {
+    outline: none;
+    box-shadow: 0 0 5px #00c6ff;
+  }
+
+  .accordion .arrow {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+  .accordion.active .arrow {
+    transform: rotate(90deg);
+  }
+
+  .panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .panel.open {
+    max-height: 2000px; /* large enough for content */
+  }
+
+  .subject-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .subject {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.3s ease;
+  }
+  body.light .subject {
+    background: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .subject label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 6px;
+    box-shadow: inset 0 0 6px #ffffff;
+    transition: box-shadow 0.3s ease;
+  }
+  input[type="number"]:focus, input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px #00c6ff;
+  }
+  body.light input[type="number"], body.light input[type="text"] {
+    box-shadow: inset 0 0 6px #bbb;
+  }
+  body.light input[type="number"]:focus, body.light input[type="text"]:focus {
+    box-shadow: 0 0 10px #0072ff;
+  }
+
+  button {
+    margin-top: 30px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0072ff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    user-select: none;
+  }
+  button:hover {
+    background: #e0e0e0;
+  }
+  body.light button {
+    background: #0072ff;
+    color: #fff;
+  }
+  body.light button:hover {
+    background: #005bb5;
+  }
+
+  .result, .verse {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+  .verse {
+    font-style: italic;
+    color: #fffbd6;
+  }
+  body.light .verse {
+    color: #555;
+  }
+
+  /* Theme toggle */
+  #themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background: #0072ff;
+    border: none;
+    border-radius: 30px;
+    color: #fff;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    user-select: none;
+    z-index: 999;
+  }
+  #themeToggle:hover {
+    background: #005bb5;
+  }
+  body.light #themeToggle {
+    background: #555;
+  }
+  body.light #themeToggle:hover {
+    background: #333;
+  }
+
+  /* Info display */
+  #inputInfo {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffe;
+  }
+  body.light #inputInfo {
+    color: #222;
+  }
+</style>
+</head>
+<body>
+<button id="themeToggle" aria-label="Toggle Light/Dark Theme">🌙 Dark Mode</button>
+
+<div class="container">
+  <h1>🎓 FICA Grade Calculator</h1>
+  <div class="datetime" id="datetime"></div>
+
+  <!-- Student name input -->
+  <input
+    type="text"
+    id="studentName"
+    placeholder="Enter your full name"
+    autocomplete="name"
+    style="max-width: 400px; margin: 0 auto 20px auto; display: block;"
+  />
+
+  <div id="inputInfo" aria-live="polite"></div>
+
+  <div id="subjectContainer"></div>
+
+  <button id="calculateBtn">🎯 Calculate Grade</button>
+
+  <div class="result" id="output"></div>
+  <div class="verse" id="verse"></div>
+</div>
+
+<script>
+  const scriptures = [
+    "Proverbs 13:4 — Work hard and become successful; be lazy and never succeed.",
+    "Philippians 4:13 — I can do all things through Christ who strengthens me.",
+    "Colossians 3:23 — Whatever you do, work at it with all your heart, as working for the Lord.",
+    "2 Timothy 2:15 — Do your best to present yourself to God as one approved."
+  ];
+
+  // Subjects data (same as before)
+  const generalSubjects = [
+    "Biblical Studies IV: Life of Christ",
+    "Apologetics I–A",
+    "Apologetics II–A",
+    "Christian Counselling (I, II, III)",
+    "Christian Growth",
+    "Collectivism",
+    "Foundations for Living II",
+    "Successful Living A",
+    "English III",
+    "English IV",
+    "Algebra II",
+    "Maths Literacy II",
+    "Advanced Biology",
+    "Business Studies II",
+    "Chemistry",
+    "Geography Form 5 (Tanzania Only)",
+    "Physics",
+    "American History II",
+    "History of Civilization II",
+    "Biblical Studies Essay III",
+    "English Essay III",
+    "Social Studies Essay III",
+    "English Research Paper (1131 & 1132)",
+    "Maths Paper 3",
+    "Maths Project 3",
+    "Science Paper 3",
+    "Science Project 3"
+  ];
+
+  const intermediateSubjects = [
+    "Biblical Studies I: New Testament Survey",
+    "Apologetics I-A",
+    "Apologetics II-A",
+    "Successful Living A",
+    "General Maths",
+    "Algebra I",
+    "Algebra I-A / Geometry I-A",
+    "General English",
+    "English I",
+    "Earth Science",
+    "Biology",
+    "Physical Science I",
+    "British and European History",
+    "Social Studies I",
+    "World History I",
+    "World Geography",
+    "Word Building",
+    "Etymology",
+    "Literature 8",
+    "Literature and Critical Writing 9",
+    "Literature 9"
+  ];
+
+  const advancedSubjects = [
+    "ACE Monitor Training I",
+    "ACE Professional Supervisor Training I",
+    "Advanced Art",
+    "Afrikaans I",
+    "Afrikaans II",
+    "Agriculture O Level / GCSE",
+    "Astronomy (Lifepac)",
+    "Auto Mechanics (UK)",
+    "British and European History",
+    "CEFR A2",
+    "Complete Art (Lifepac)",
+    "Convention Attendance & Participation – Full Credit",
+    "Convention Attendance & Participation – Half Credit",
+    "Convention Single Entry Item",
+    "Dance Grade 5",
+    "Dance Grade 6",
+    "DELF A2",
+    "Drama Grade 5",
+    "Drama Grade 6",
+    "Economic & Management Sciences",
+    "Family & Consumer Science (Lifepac)",
+    "Foundations for Living (Lifepac)",
+    "French I",
+    "GCSE (Languages)",
+    "GCSE / IGCSE Computer Science",
+    "Goethe Zertifikat A2 – German",
+    "Health",
+    "HSK 3 Chinese",
+    "Missions",
+    "Music",
+    "Music Grade 5 Performance",
+    "Music Grade 5 Theory",
+    "Music Grade 6 Performance",
+    "Music Grade 6 Theory",
+    "Nutrition Science (AEE)",
+    "Personal Finance",
+    "Python Programming",
+    "Rosetta Stone Language Version 4 (Online)",
+    "Social Studies I",
+    "Spanish I",
+    "Speech",
+    "Sports (Pre‑requisite: Health)",
+    "Successful Living",
+    "Successful Living B",
+    "Typing (Other)",
+    "Typing ACE",
+    "Web Design"
+  ];
+
+  const electivesSubjects = [
+    "Advanced Biology (Apologia)",
+    "AS Computer Science",
+    "Biblical Studies II: Old Testament Survey",
+    "British Literature",
+    "Brush Art",
+    "Business Studies I",
+    "CH Programming",
+    "CEFR Exams A2",
+    "CEFR Exams B1",
+    "Computer Science Foundations",
+    "ICT: ICDL II",
+    "ICT: SkillsPro II",
+    "Intermediate Biology",
+    "Java Programming",
+    "Literature & Critical Writing 10.1",
+    "Literature & Critical Writing 10.2",
+    "Life Science I (De‑accredited)",
+    "Missions"
+  ];
+
+  const subjectContainer = document.getElementById('subjectContainer');
+  const inputInfo = document.getElementById('inputInfo');
+  const studentNameInput = document.getElementById('studentName');
+
+  // Helper: create accordion section and inputs
+  function createAccordionSection(title, subjects, inputCount = 12, suffix = '') {
+    const accordion = document.createElement('button');
+    accordion.className = 'accordion';
+    accordion.setAttribute('aria-expanded', 'false');
+    accordion.setAttribute('aria-controls', title.replace(/\s+/g,'') + '-panel');
+    accordion.setAttribute('tabindex', '0');
+    accordion.innerHTML = `<span>${title}</span> <span class="arrow">▶</span>`;
+
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    panel.id = title.replace(/\s+/g,'') + '-panel';
+
+    const subjectGrid = document.createElement('div');
+    subjectGrid.className = 'subject-inputs';
+
+    subjects.forEach(subject => {
+      const div = document.createElement('div');
+      div.className = 'subject';
+      const safeIdBase = subject.replace(/\s+/g,'_').replace(/[^\w\-]/g, '') + suffix;
+      div.innerHTML = `<label for="${safeIdBase}-1">${subject}</label>`;
+      for(let i=1; i<=inputCount; i++) {
+        div.innerHTML += `<input type="number" min="0" max="100" placeholder="Mark ${i}" id="${safeIdBase}-${i}"><br>`;
+      }
+      subjectGrid.appendChild(div);
+    });
+
+    panel.appendChild(subjectGrid);
+
+    accordion.addEventListener('click', toggleAccordion);
+    accordion.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleAccordion.call(accordion);
+      }
+    });
+
+    subjectContainer.appendChild(accordion);
+    subjectContainer.appendChild(panel);
+
+    // Add listener to inputs to update info on input
+    subjectGrid.querySelectorAll('input[type="number"]').forEach(input => {
+      input.addEventListener('input', () => updateInputInfo(title, subjects, suffix, inputCount));
+    });
+  }
+
+  function toggleAccordion() {
+    const panelId = this.getAttribute('aria-controls');
+    const panel = document.getElementById(panelId);
+    const isOpen = this.classList.contains('active');
+
+    if (isOpen) {
+      this.classList.remove('active');
+      this.setAttribute('aria-expanded', 'false');
+      panel.classList.remove('open');
+    } else {
+      this.classList.add('active');
+      this.setAttribute('aria-expanded', 'true');
+      panel.classList.add('open');
+    }
+  }
+
+  // Function to update the input info message live
+  function updateInputInfo(sectionTitle, subjects, suffix, inputCount) {
+    const studentName = studentNameInput.value.trim() || 'Student';
+    let totalMarks = subjects.length * inputCount;
+    let filledCount = 0;
+
+    subjects.forEach(subject => {
+      const safeIdBase = subject.replace(/\s+/g,'_').replace(/[^\w\-]/g, '') + suffix;
+      for(let i=1; i<=inputCount; i++) {
+        const input = document.getElementById(`${safeIdBase}-${i}`);
+        if(input && input.value.trim() !== '') filledCount++;
+      }
+    });
+
+    const remaining = totalMarks - filledCount;
+
+    inputInfo.textContent = `${studentName}, you are entering marks for "${sectionTitle}". ${remaining} mark${remaining !== 1 ? 's' : ''} left to fill.`;
+  }
+
+  createAccordionSection("🎓 General Certificate Subjects", generalSubjects, 12, "-gen");
+  createAccordionSection("🎓 Intermediate Certificate Subjects", intermediateSubjects, 12, "-int");
+  createAccordionSection("🎓 Advanced Certificate Subjects", advancedSubjects, 12, "-adv");
+  createAccordionSection("🎓 Electives Subjects", electivesSubjects, 12, "-elec");
+
+  function updateDateTime() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const time = now.toLocaleTimeString();
+    const date = now.toLocaleDateString(undefined, options);
+    document.getElementById('datetime').textContent = `📅 ${date} — 🕒 ${time}`;
+  }
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
+
+  // Marks validation: must be numbers between 0-100 or empty
+  function validateMarks() {
+    const allInputs = document.querySelectorAll('input[type="number"]');
+    for (const input of allInputs) {
+      if (input.value.trim() === '') continue; // empty allowed
+
+      const val = Number(input.value);
+      if (isNaN(val) || val < 0 || val > 100) {
+        alert(`Please enter a valid mark between 0 and 100.`);
+        input.focus();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Calculate grades with average
+  function calculateGrades() {
+    if (!validateMarks()) return null;
+
+    let total = 0;
+    let subjectCount = 0;
+
+    const allSubjects = [
+      ...generalSubjects.map(s => [s, 12, '-gen']),
+      ...intermediateSubjects.map(s => [s, 12, '-int']),
+      ...advancedSubjects.map(s => [s, 12, '-adv']),
+      ...electivesSubjects.map(s => [s, 12, '-elec'])
+    ];
+
+    allSubjects.forEach(([subject, maxInputs, suffix]) => {
+      let subjectTotal = 0;
+      let enteredCount = 0;
+      for(let i=1; i<=maxInputs; i++) {
+        const val = parseFloat(document.getElementById(subject.replace(/\s+/g,'_').replace(/[^\w\-]/g, '') + suffix + '-' + i)?.value);
+        if(!isNaN(val)) {
+          subjectTotal += val;
+          enteredCount++;
+        }
+      }
+      if(enteredCount > 0) {
+        total += subjectTotal / enteredCount;
+        subjectCount++;
+      }
+    });
+
+    if(subjectCount === 0) {
+      alert('Please enter at least one subject mark.');
+      return null;
+    }
+
+    const avg = total / subjectCount;
+    let grade = '', status = '';
+
+    if(avg >= 90) grade = 'A+', status = '✅ Excellent';
+    else if(avg >= 80) grade = 'A', status = '✅ Very Good';
+    else if(avg >= 70) grade = 'B', status = '✅ Good';
+    else if(avg >= 60) grade = 'C', status = '✅ Fair';
+    else if(avg >= 50) grade = 'D', status = '✅ Pass';
+    else grade = 'F', status = '❌ Fail';
+
+    const verse = scriptures[Math.floor(Math.random()*scriptures.length)];
+
+    document.getElementById('output').innerHTML =
+      `📊 Average: <strong>${avg.toFixed(2)}</strong><br>` +
+      `🎓 Grade: <strong>${grade}</strong><br>` +
+      `📌 Status: <strong>${status}</strong>`;
+
+    document.getElementById('verse').textContent = `📖 ${verse}`;
+
+    return { avg: avg.toFixed(2), grade, status, verse };
+  }
+
+  // Calculate button handler
+  document.getElementById('calculateBtn').addEventListener('click', () => {
+    const studentName = studentNameInput.value.trim();
+    if(!studentName) {
+      alert('Please enter your name before calculating grades.');
+      studentNameInput.focus();
+      return;
+    }
+    calculateGrades();
+  });
+
+  // Theme toggle logic
+  const themeToggleBtn = document.getElementById('themeToggle');
+  function updateThemeButton() {
+    if(document.body.classList.contains('light')) {
+      themeToggleBtn.textContent = '🌙 Dark Mode';
+      themeToggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+      themeToggleBtn.textContent = '☀️ Light Mode';
+      themeToggleBtn.setAttribute('aria-label', 'Switch to light mode');
+    }
+  }
+  themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    updateThemeButton();
+  });
+  updateThemeButton();
+</script>
+
+</body>
+</html>

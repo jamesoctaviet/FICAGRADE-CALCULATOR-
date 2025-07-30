@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FICA School Events & Reminders</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: #fff;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .activities {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .activity {
+      background: #ffffff10;
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid #ffffff30;
+    }
+    .activity h3 {
+      margin-bottom: 5px;
+    }
+    form {
+      margin-top: 30px;
+      background: #ffffff15;
+      padding: 20px;
+      border-radius: 15px;
+    }
+    input, textarea {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #0072ff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #cceeff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📅 Friends International Christian Academy - Activities</h1>
+    <p>Stay updated with school events and set personal reminders</p>
+  </header>
+
+  <div class="container">
+    <h2>📌 Weekly School Activities</h2>
+    <div class="activities">
+      <div class="activity">
+        <h3>🗓 Monday</h3>
+        <p>Morning Assembly</p>
+        <p>ICT Lab Access</p>
+        <p>Class Test - Science</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Tuesday</h3>
+        <p>Literature Club</p>
+        <p>Football Training</p>
+        <p>Computer Practical</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Wednesday</h3>
+        <p>Midweek Chapel</p>
+        <p>Debate Club</p>
+        <p>Class Test - Math</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Thursday</h3>
+        <p>Art & Crafts</p>
+        <p>Drama Rehearsals</p>
+        <p>Science Experiment Lab</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Friday</h3>
+        <p>Music & Choir</p>
+        <p>General Cleaning</p>
+        <p>PE / Sports</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Saturday</h3>
+        <p>Optional Remedial Lessons</p>
+        <p>Christian Fellowship</p>
+      </div>
+      <div class="activity">
+        <h3>🗓 Sunday</h3>
+        <p>No Official School Program</p>
+      </div>
+    </div>
+
+    <h2>👨‍👩‍👧‍👦 Parent Login & Reminder</h2>
+    <form onsubmit="saveReminder(event)">
+      <input type="email" id="parentEmail" placeholder="Parent Gmail (e.g. example@gmail.com)" required><br>
+      <input type="password" id="parentPassword" placeholder="Password" required><br>
+      <textarea id="parentReminder" placeholder="Write a reminder for your child (e.g. Bring lab coat on Wednesday)"></textarea><br>
+      <button type="submit">Save Reminder</button>
+    </form>
+    <div id="confirmation" style="margin-top: 15px;"></div>
+
+    <footer>
+      Made by the <strong>Python Class of FICA</strong><br>
+      Friends International Christian Academy, Uganda
+    </footer>
+  </div>
+
+  <script>
+    function saveReminder(e) {
+      e.preventDefault();
+      const email = document.getElementById('parentEmail').value;
+      const password = document.getElementById('parentPassword').value;
+      const reminder = document.getElementById('parentReminder').value;
+
+      if (!email || !password) {
+        alert("Email and Password are required");
+        return;
+      }
+
+      const stored = {
+        email,
+        password,
+        reminder,
+        date: new Date().toLocaleString()
+      };
+
+      localStorage.setItem(`fica_parent_${email}`, JSON.stringify(stored));
+
+      document.getElementById("confirmation").innerHTML = `✅ Reminder saved for ${email}!`;
+      document.getElementById("parentEmail").value = "";
+      document.getElementById("parentPassword").value = "";
+      document.getElementById("parentReminder").value = "";
+    }
+  </script>
+</body>
+</html>
